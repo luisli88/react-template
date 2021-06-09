@@ -4,4 +4,4 @@ export type ConfigurationResponse = { [name: string]: any }
 export type ConfigurationFunctionTemplate<
   P extends ConfigurationParameters | undefined,
   R extends ConfigurationResponse
-> = (parameters?: P) => R
+> = (parameters?: P) => R | Promise<R>

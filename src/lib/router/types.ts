@@ -9,6 +9,10 @@ export type RouteIsActiveProps = {
   isActive?: RouteIsActiveFunction
 }
 
+export type RouterStateProps = {
+  routeState: any
+}
+
 export type FailedRouteActivationProps = {
   onFailedActivation?: PathGenerationFunction
 }
@@ -22,19 +26,21 @@ export type ProtectedRouteProps = ReduxContextProps &
 export type RouteContent = {
   path: string
   isExact?: boolean
-  component?: ComponentType<ReduxContextProps>
+  component?: ComponentType<ReduxContextProps & RouterStateProps>
 
   redirectTo?: () => string
-  isRestricted?: boolean
+  restrictionType?: string | null
   onFailedActivation?: () => string
 }
+
+export type RoutesConfiguration = () => RouteContent[]
 
 export type RoutesComponentProps = {
   routes: RouteContent[]
 }
 
 export type ProtectedRouteComponentProps = {
-  protectedComponent?: ComponentType<ProtectedRouteProps>
+  protectedComponents?: { [restrictionName: string]: ComponentType<ProtectedRouteProps> }
 }
 
 export type RouterProps = RoutesComponentProps & ProtectedRouteComponentProps & ReduxContextProps

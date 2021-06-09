@@ -4,9 +4,11 @@ import { ConnectedRouter } from 'connected-react-router'
 
 import { RouterProps } from './types'
 import { history } from '../reducer'
+import { useNavigation } from './hooks'
 
 export const AppRouter: React.FunctionComponent<RouterProps> = (props: RouterProps) => {
-  const { context, routes, protectedComponent: ProtectedRoute = null } = props
+  const { context, routes, protectedComponents = {} } = props
+  const { routeState } = useNavigation(context)
 
   return (
     <ConnectedRouter context={context} history={history}>
@@ -19,11 +21,12 @@ export const AppRouter: React.FunctionComponent<RouterProps> = (props: RouterPro
             component: Component = null,
             redirectTo,
 
-            isRestricted = false,
+            restrictionType = null,
             onFailedActivation,
           } = route
 
-          const ParentRoute = ProtectedRoute && isRestricted ? ProtectedRoute : Route
+          const ProtectedRoute = (restrictionType && protectedComponents[restrictionType]) || null
+          const ParentRoute = ProtectedRoute || Route
 
           return redirectTo ? (
             <Route key={path} path={path}>
@@ -37,7 +40,7 @@ export const AppRouter: React.FunctionComponent<RouterProps> = (props: RouterPro
               exact={isExact}
               onFailedActivation={onFailedActivation}
             >
-              {Component && <Component context={context} />}
+              {Component && <Component context={context} routeState={routeState} />}
             </ParentRoute>
           )
         })}

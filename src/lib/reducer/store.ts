@@ -25,7 +25,10 @@ export const useReduxContext: CreateGlobalContextFunction = (reducers: ReducerCo
     const initialContext = {
       store: configureStore({
         reducer: createRootReducers(history),
-        middleware: [routerMiddleware(history), ...getDefaultMiddleware()],
+        middleware: [
+          routerMiddleware(history),
+          ...getDefaultMiddleware({ serializableCheck: false }),
+        ],
       }),
       storeState: {},
     }

@@ -67,7 +67,7 @@ export type ReducerSelectorsFunction = (
 
 export type BasicReducerAction = (...props: any) => any
 export type ReducerActions = { [actionName: string]: BasicReducerAction }
-export type ActionsSlice = { actions: ReducerActions }
+export type ActionsSlice<A> = { actions: A }
 export type SelectorsSlice = { selectors: ReducerSelectors }
 export type GenerateReducerFunction = <
   M extends ModelBase,
@@ -75,9 +75,8 @@ export type GenerateReducerFunction = <
   Name extends string = string
 >(
   reducerOptions: CreateSliceOptions<M, CaseReducers, Name>,
-  actions: any,
   selectors: ReducerSelectorFunctions,
-) => Slice<M, CaseReducers, Name> & ActionsSlice & SelectorsSlice
+) => Slice<M, CaseReducers, Name> & SelectorsSlice
 
 // Components and props
 export type ReduxContextProps = {

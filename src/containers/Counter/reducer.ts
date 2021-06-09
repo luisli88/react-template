@@ -25,6 +25,5 @@ export const reducer = generateReducer(
         )
     },
   },
-  actions,
   selectors as ReducerSelectorFunctions,
 )

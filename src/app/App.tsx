@@ -22,7 +22,11 @@ export const App: React.FunctionComponent = () => {
 
   return (
     <Provider context={context} store={store}>
-      <AppRouter context={context} routes={routes} protectedComponent={CounterProtectedRoute} />
+      <AppRouter
+        context={context}
+        routes={routes}
+        protectedComponents={{ counter: CounterProtectedRoute }}
+      />
     </Provider>
   )
 }

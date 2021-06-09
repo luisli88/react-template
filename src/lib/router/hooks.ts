@@ -1,18 +1,14 @@
 import { useCallback } from 'react'
-import { go, push, replace, goBack, goForward } from 'connected-react-router'
-import { StoreReduxContext, useStoreHooksFromReduxContext } from '../reducer'
 import { AnyAction } from 'redux'
+import { go, push, replace, goBack, goForward } from 'connected-react-router'
 
-export const useNavigation = (
-  context: StoreReduxContext<any, AnyAction>,
-): {
-  pushPage: typeof push
-  replacePage: typeof replace
-  goTo: typeof go
-  goOneBack: typeof goBack
-  goOneForward: typeof goForward
-} => {
-  const { useDispatch } = useStoreHooksFromReduxContext(context)
+import { StoreReduxContext, useStoreHooksFromReduxContext } from '../reducer'
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useNavigation = (context: StoreReduxContext<any, AnyAction>) => {
+  const { useDispatch, useStore } = useStoreHooksFromReduxContext(context)
+  const store = useStore()
+  const state = store.getState()['router']
 
   const dispatch = useDispatch()
 
@@ -38,5 +34,6 @@ export const useNavigation = (
     goTo,
     goOneBack,
     goOneForward,
+    routeState: state,
   }
 }

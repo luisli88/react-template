@@ -3,8 +3,15 @@ const path = require('path')
 
 module.exports = {
   style: {
-    postcss: {
-      plugins: [require('tailwindcss'), require('autoprefixer')],
+    sass: {
+      loaderOptions: (sassLoaderOptions) => {
+        return {
+          ...sassLoaderOptions,
+          sassOptions: {
+            includePaths: ['node_modules/foundation-sites/scss'],
+          },
+        }
+      },
     },
   },
   webpack: {

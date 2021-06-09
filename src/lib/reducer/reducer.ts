@@ -1,4 +1,11 @@
-import { createSlice, SliceCaseReducers, CreateSliceOptions } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  SliceCaseReducers,
+  CreateSliceOptions,
+  AsyncThunk,
+  unwrapResult,
+} from '@reduxjs/toolkit'
+import { Dispatch } from 'react'
 import { generateReducerSelectors } from './selectors'
 import { ModelBase, GenerateReducerFunction, ReducerSelectorFunctions } from './types'
 
@@ -8,14 +15,22 @@ export const generateReducer: GenerateReducerFunction = <
   Name extends string = string
 >(
   reducerOptions: CreateSliceOptions<M, CaseReducers, Name>,
-  actions: any,
   selectorsDefinitions: ReducerSelectorFunctions,
 ) => {
   const slice = createSlice(reducerOptions)
   const selectors = generateReducerSelectors(reducerOptions.name, selectorsDefinitions)
   return {
     ...slice,
-    actions,
     selectors,
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const asyncDispatchFactory = (dispatch: Dispatch<any>) => async <
+  Returned,
+  ThunkArg,
+  ThunkApiConfig = any
+>(
+  actionThunk: AsyncThunk<Returned, ThunkArg, ThunkApiConfig>,
+  args: ThunkArg,
+) => await (dispatch(actionThunk.call(null, args)) as any).then(unwrapResult)
