@@ -1,3 +1,0 @@
-// Actions
-export const DEFAULT_SET_ACTION = 'DEFAULT_ACTION'
-export const DEFAULT_FETCH_ACTION = 'DEFAULT_FETCH_ACTION'
