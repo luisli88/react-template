@@ -2,11 +2,13 @@ import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 
-import { RouterProps } from './types'
+import { RouterComponentProps } from './types'
 import { history } from '../reducer'
 import { useNavigation } from './hooks'
 
-export const AppRouter: React.FunctionComponent<RouterProps> = (props: RouterProps) => {
+export const AppRouter: React.FunctionComponent<RouterComponentProps> = (
+  props: RouterComponentProps,
+) => {
   const { context, routes, protectedComponents = {} } = props
   const { routeState } = useNavigation(context)
 
@@ -36,11 +38,14 @@ export const AppRouter: React.FunctionComponent<RouterProps> = (props: RouterPro
             <ParentRoute
               key={path}
               context={context}
+              history={history}
               path={path}
               exact={isExact}
               onFailedActivation={onFailedActivation}
             >
-              {Component && <Component context={context} routeState={routeState} />}
+              {Component && (
+                <Component context={context} history={history} routeState={routeState} />
+              )}
             </ParentRoute>
           )
         })}

@@ -1,5 +1,6 @@
 import { ComponentType } from 'react'
 import { RouteProps } from 'react-router'
+import { RouterProps } from 'react-router-dom'
 import { ReduxContextProps } from '../reducer'
 
 export type RouteIsActiveFunction = (parameters: any) => boolean
@@ -17,7 +18,9 @@ export type FailedRouteActivationProps = {
   onFailedActivation?: PathGenerationFunction
 }
 
-export type ProtectedRouteProps = ReduxContextProps &
+export type BasicRouteProps = ReduxContextProps & RouterProps
+
+export type ProtectedRouteProps = BasicRouteProps &
   RouteIsActiveProps &
   FailedRouteActivationProps &
   RouteProps
@@ -26,7 +29,7 @@ export type ProtectedRouteProps = ReduxContextProps &
 export type RouteContent = {
   path: string
   isExact?: boolean
-  component?: ComponentType<ReduxContextProps & RouterStateProps>
+  component?: ComponentType<BasicRouteProps & RouterStateProps>
 
   redirectTo?: () => string
   restrictionType?: string | null
@@ -43,4 +46,6 @@ export type ProtectedRouteComponentProps = {
   protectedComponents?: { [restrictionName: string]: ComponentType<ProtectedRouteProps> }
 }
 
-export type RouterProps = RoutesComponentProps & ProtectedRouteComponentProps & ReduxContextProps
+export type RouterComponentProps = RoutesComponentProps &
+  ProtectedRouteComponentProps &
+  ReduxContextProps
